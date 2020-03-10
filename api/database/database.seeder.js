@@ -133,32 +133,3 @@ sequelize.sync({force: true}).then(() => {
         process.exit(0)
     })
 })
-
-
-
-
-// DomeLoader.js
-
-// export default {
-//     load(callback){
-//         GltgLoader.load("path/to/modl", model => {
-//             callback(model.scene)
-//         })
-//     }
-// }
-
-// // Screen.js
-// function createScene(){
-
-
-
-//     DomeLoader.load(loadedObj => {
-
-//         this.dome = loadedObj
-
-
-//         // do
-
-//     })
-
-// }

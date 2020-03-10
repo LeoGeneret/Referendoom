@@ -12,5 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         updatedAt: false
     })
 
+
+    ProposalVoteEntity.createVote = async (parameters = {}) => {
+        return ProposalVoteEntity.create(parameters)
+    }
+
     return ProposalVoteEntity
 }

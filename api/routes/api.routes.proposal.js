@@ -1,5 +1,5 @@
 
-const TMP_SELF_USER_ID = 34
+const TMP_SELF_USER_ID = 1
 
 module.exports = (sequelize, express) => {
 
@@ -39,22 +39,45 @@ module.exports = (sequelize, express) => {
         return res.json(results)
     })
 
-    // router.patch("/proposals/:id/vote", async (req, res) => {
+    router.patch("/proposals/:id/vote", async (req, res) => {
 
-    //     // params
-    //     const proposalId = req.params.id
+        // params
+        const proposalId = req.params.id
 
-    //     // body
-    //     const isAgree = req.body && req.body.is_agree
+        // body
+        const isAgree = req.body && req.body.is_agree
 
-    //     const results = await sequelize.entities.ProposalEntity.setVote(proposalId, isAgree)
+        const results = await sequelize.entities.ProposalEntity.setVote(proposalId, isAgree, TMP_SELF_USER_ID)
 
-    //     if(results.error){
-    //         return res.status(results.error.status).json(results)
-    //     }
+        if(results.error){
+            return res.status(results.error.status).json(results)
+        }
 
-    //     return res.json(results)
-    // })
+        return res.json(results)
+    })
+
+    router.post("/proposals", async (req, res) => {
+
+        // body
+        const title = req.body && req.body.title
+        const description = req.body && req.body.description
+        const tagId = req.body && req.body.tag_id
+
+        const results = await sequelize.entities.ProposalEntity.createProposal(
+            TMP_SELF_USER_ID,
+            title,
+            description,
+            tagId
+        )
+
+        if(results.error){
+            return res.status(results.error.status).json(results)
+        } 
+        // has been created
+        else {
+            return res.status(201).json(results)
+        }
+    })
 
     return router
 }
