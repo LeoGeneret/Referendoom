@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   myCard: {
     width: "90%",
     height: 185,
+    marginTop: 30,
     backgroundColor: "white",
     shadowColor: "#000",
     shadowOffset: {
