@@ -1,78 +1,68 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import Header from '../Header';
-import listDetails from '../tabs/ListDetails';
+// import listDetails from '../tabs/ListDetails';
 import MyCard from '../myCard'
+import axios from 'axios';
 
-export default function HomeScreen() {
+export default function Home() {
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    const result = axios.get(
+      'http://ec2-35-181-9-37.eu-west-3.compute.amazonaws.com:4000/proposals')
+      .then(res => {
+        setList(res.data.list);
+        console.log(res.data.list);
+      })
+      .catch(res => console.log())
+    return () => {
+    }
+  }, []);
+
+console.log(list.length);
+
+
   return (
     <View>
       <Header />
-      <ScrollView style={{ marginTop: 100 }}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <View style={styles.card}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.tag}>Ecologie</Text>
-            </View>
-            <Image source={require('../../assets/bg-ecologie.jpg')} style={styles.cardImage}></Image>
+      <FlatList
+        keyExtractor={item => item.id}
+        data={list}
+        renderItem={
+          (
+            {
+              item
+            }
+          ) => (
+              <View style={{ marginTop: 100 }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                  <View style={styles.card}>
+                    <View style={styles.cardHeader}>
+                      <Text style={styles.tag}>Ecologie</Text>
+                    </View>
+                    <Image source={require('../../assets/bg-ecologie.jpg')} style={styles.cardImage}></Image>
 
-            <View style={styles.cardDetails}>
-              <View style={styles.flex}>
-                <Text style={styles.voteGood}>70% de oui </Text>
-                <Text style={styles.votebad}>30% de non</Text>
+                    <View style={styles.cardDetails}>
+                      <View style={styles.flex}>
+                        <Text style={styles.voteGood}>70% de oui </Text>
+                        <Text style={styles.votebad}>30% de non</Text>
+                      </View>
+                      <Text style={styles.cardTitle}></Text>
+                      <Text> lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum ... </Text>
+                      <View style={styles.containerBtn}>
+                        <Image style={styles.btnValid} source={require('../../assets/valid.png')}></Image>
+                        <Image style={styles.btnCross} source={require('../../assets/cross.png')}></Image>
+                      </View>
+                    </View>
+                  </View>
+                </View>
               </View>
-              <Text style={styles.cardTitle}>Faut t-il arreter le plastique ? </Text>
-              <Text> lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum ... </Text>
-              <View style={styles.containerBtn}>
-                <Image style={styles.btnValid} source={require('../../assets/valid.png')}></Image>
-                <Image style={styles.btnCross} source={require('../../assets/cross.png')}></Image>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.card}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.tag}>Ecologie</Text>
-            </View>
-            <Image source={require('../../assets/bg-ecologie.jpg')} style={styles.cardImage}></Image>
-
-            <View style={styles.cardDetails}>
-              <View style={styles.flex}>
-                <Text style={styles.voteGood}>70% de oui </Text>
-                <Text style={styles.votebad}>30% de non</Text>
-              </View>
-              <Text style={styles.cardTitle}>Faut t-il arreter le plastique ? </Text>
-              <Text> lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum ... </Text>
-              <View style={styles.containerBtn}>
-                <Image style={styles.btnValid} source={require('../../assets/valid.png')}></Image>
-                <Image style={styles.btnCross} source={require('../../assets/cross.png')}></Image>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.card}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.tag}>Ecologie</Text>
-            </View>
-            <Image source={require('../../assets/bg-ecologie.jpg')} style={styles.cardImage}></Image>
-
-            <View style={styles.cardDetails}>
-              <View style={styles.flex}>
-                <Text style={styles.voteGood}>70% de oui </Text>
-                <Text style={styles.votebad}>30% de non</Text>
-              </View>
-              <Text style={styles.cardTitle}>Faut t-il arreter le plastique ? </Text>
-              <Text> lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum ... </Text>
-              <View style={styles.containerBtn}>
-                <Image style={styles.btnValid} source={require('../../assets/valid.png')}></Image>
-                <Image style={styles.btnCross} source={require('../../assets/cross.png')}></Image>
-              </View>
-            </View>
-          </View>
-        </View>
-        <MyCard />
-      </ScrollView>
-    </View>
+            )
+        }
+      />
+      < MyCard />
+    </View >
   );
 }
 
