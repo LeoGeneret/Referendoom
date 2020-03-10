@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import Header from '../Header';
 import listDetails from '../tabs/ListDetails';
+import MyCard from '../myCard'
 
 export default function HomeScreen() {
   return (
@@ -69,6 +70,7 @@ export default function HomeScreen() {
             </View>
           </View>
         </View>
+        <MyCard />
       </ScrollView>
     </View>
   );
