@@ -10,8 +10,8 @@ import ListDetails from "./components/tabs/ListDetails";
 import { Ionicons } from "@expo/vector-icons";
 
 let menuTabIcon = require('./assets/menu.png')
-let propsTabIcon  = require('./assets/create.png')
-let createTabIcon = require('./assets/tab3.png')
+let propsTabIcon  = require('./assets/tab3.png')
+let createTabIcon = require('./assets/create.png')
 
 
 function SettingsScreen() {
@@ -49,8 +49,7 @@ export default function App() {
             } else if (route.name === "Soumettre") {
               iconName = createTabIcon;
             }
-
-            // You can return any component that you like here!
+            
             return <Image source={iconName} />;
           }
         })}
