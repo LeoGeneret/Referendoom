@@ -47,7 +47,7 @@ export default function Home({ navigation }) {
                     <View style={styles.cardHeader}>
                       <Text style={styles.tag}>{item.tag ? item.tag.label : ''}</Text>
                     </View>
-                    <Image source={item.illustration} style={styles.cardImage}></Image>
+                    <Image source={{ uri: item.illustration }} style={styles.cardImage}></Image>
                     <View style={styles.cardDetails}>
                       <View style={styles.flex}>
                         <Text style={styles.voteGood}>{item.votes.is_agree = item.votes.is_agree * 100} % de oui </Text>
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 
   cardImage: {
     width: '100%',
-    height: 180,
+    height: 150,
     backgroundColor: 'black'
   },
 
