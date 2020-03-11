@@ -1,4 +1,5 @@
 const EntityUtils = require("./EntityUtils")
+const Op = require("sequelize").Op
 
 const Format = {
     attributes : {
@@ -70,13 +71,25 @@ module.exports = (sequelize, DataTypes) => {
 
     // Fetchers
 
-    ProposalEntity.getAll = async (limit = 5, offset = 0, self_id, user_id = null) => {
-
-        const filter = user_id ? {
+    ProposalEntity.getAll = async (limit = 5, offset = 0, self_id, user_id = null, search = null) => {
+        
+        const searchFilter = search ? {
             where: {
-                author_id: user_id
+                title: {
+                    [Op.substring]: search
+                }
             }
         } : {}
+
+        const authorFilter = user_id ? {
+            where: {
+                author_id: user_id,
+            }
+        } : {}
+
+        const filter = Object.assign(authorFilter, searchFilter)
+
+        console.log({filter})
 
         const proposals = await EntityUtils.getPaginatedList(
             limit, 
