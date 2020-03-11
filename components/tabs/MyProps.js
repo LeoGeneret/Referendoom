@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image, FlatList } from "react-native";
+import { SearchBar } from 'react-native-elements';
 import Header from "../Header";
-// import listDetails from '../tabs/ListDetails';
 import MyCard from "../myCard";
 import axios from "axios";
 import { BorderlessButton } from "react-native-gesture-handler";
@@ -19,13 +19,19 @@ export default function Home() {
       })
       .catch(res => console.log());
     return () => {};
+
   }, []);
 
-  console.log("list", list);
-
+  
   return (
     <View style={styles.myProps}>
       <Header />
+      <SearchBar
+        style={{width: '100%'}}
+        placeholder="Rechercher..."
+        lightTheme={true}
+        value={'tg'}
+      />
       <FlatList
         style={styles.flatList}
         contentContainerStyle={styles.flatListCCS}
@@ -41,8 +47,6 @@ export default function Home() {
 const styles = StyleSheet.create({
   myProps: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
       width: '100%'
   },
   flatList: {
