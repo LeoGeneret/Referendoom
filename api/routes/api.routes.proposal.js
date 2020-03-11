@@ -39,6 +39,21 @@ module.exports = (sequelize, express) => {
         return res.json(results)
     })
 
+    router.delete("/proposals/:id", async (req, res) => {
+
+        // Params
+        const proposalId = (req.params.id && Number(req.params.id)) || null
+
+        const results = await sequelize.entities.ProposalEntity.deleteProposal(proposalId, TMP_SELF_USER_ID)
+
+        if(results.error){
+            return res.status(results.error.status).json(results)
+        } else {
+            return res.sendStatus(204)
+        }
+
+    })
+
     router.patch("/proposals/:id/vote", async (req, res) => {
 
         // params
@@ -75,7 +90,7 @@ module.exports = (sequelize, express) => {
         } 
         // has been created
         else {
-            return res.status(201).json(results)
+            return res.sendStatus(201)
         }
     })
 
