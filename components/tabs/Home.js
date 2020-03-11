@@ -20,7 +20,7 @@ export default function Home() {
     }
   }, []);
 
-console.log(list.length);
+  console.log(list.length);
 
 
   return (
@@ -35,14 +35,14 @@ console.log(list.length);
               item
             }
           ) => (
-              <View style={{ marginTop: 100 }}>
+              <View style={{ marginTop: 50 }}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                   <View style={styles.card}>
                     <View style={styles.cardHeader}>
-                      <Text style={styles.tag}>Ecologie</Text>
+                      <Text style={styles.tag}>{item.label}</Text>
                     </View>
                     <Image source={require('../../assets/bg-ecologie.jpg')} style={styles.cardImage}></Image>
-
+                    <Text style={styles.cardTitle}>{item.title}</Text>
                     <View style={styles.cardDetails}>
                       <View style={styles.flex}>
                         <Text style={styles.voteGood}>70% de oui </Text>
@@ -61,8 +61,8 @@ console.log(list.length);
             )
         }
       />
-      < MyCard />
-    </View >
+      {/* < MyCard /> */}
+    </View>
   );
 }
 
@@ -97,8 +97,8 @@ const styles = StyleSheet.create({
 
   card: {
     width: '80%',
-    marginBottom: 20,
-    height: 360,
+    marginBottom: 10,
+    height: 380,
     backgroundColor: 'white',
     shadowColor: "#000",
     shadowOffset: {
@@ -118,7 +118,8 @@ const styles = StyleSheet.create({
   },
 
   cardDetails: {
-    padding: 20
+    paddingLeft: 20,
+    paddingRight: 20
   },
   cardTitle: {
     margin: 10,
