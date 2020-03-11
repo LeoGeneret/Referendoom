@@ -1,4 +1,5 @@
 
+const utils = require("../api.utils")
 const TMP_SELF_USER_ID = 1
 
 module.exports = (sequelize, express) => {
@@ -15,8 +16,11 @@ module.exports = (sequelize, express) => {
         const userId = req.query.user_id && Number(req.query.user_id)
         const offset = req.query.offset && Number(req.query.offset)
         const limit = req.query.limit && Number(req.query.limit)
+        const search = req.query.search || null
 
-        const results = await sequelize.entities.ProposalEntity.getAll(limit, offset, TMP_SELF_USER_ID, userId)
+        const self_id = req.user.id
+
+        const results = await sequelize.entities.ProposalEntity.getAll(limit, offset, self_id, userId, search)
 
         if(results.error){
             return res.status(results.error.status).json(results)
@@ -30,7 +34,9 @@ module.exports = (sequelize, express) => {
         // Params
         const proposalId = (req.params.id && Number(req.params.id)) || null
 
-        const results = await sequelize.entities.ProposalEntity.getOne(proposalId, TMP_SELF_USER_ID)
+        const self_id = req.user.id
+
+        const results = await sequelize.entities.ProposalEntity.getOne(proposalId, self_id)
 
         if(results.error){
             return res.status(results.error.status).json(results)
@@ -44,7 +50,9 @@ module.exports = (sequelize, express) => {
         // Params
         const proposalId = (req.params.id && Number(req.params.id)) || null
 
-        const results = await sequelize.entities.ProposalEntity.deleteProposal(proposalId, TMP_SELF_USER_ID)
+        const self_id = req.user.id
+
+        const results = await sequelize.entities.ProposalEntity.deleteProposal(proposalId, self_id)
 
         if(results.error){
             return res.status(results.error.status).json(results)
@@ -62,7 +70,9 @@ module.exports = (sequelize, express) => {
         // body
         const isAgree = req.body && req.body.is_agree
 
-        const results = await sequelize.entities.ProposalEntity.setVote(proposalId, isAgree, TMP_SELF_USER_ID)
+        const self_id = req.user.id
+
+        const results = await sequelize.entities.ProposalEntity.setVote(proposalId, isAgree, self_id)
 
         if(results.error){
             return res.status(results.error.status).json(results)
@@ -78,8 +88,10 @@ module.exports = (sequelize, express) => {
         const description = req.body && req.body.description
         const tagId = req.body && req.body.tag_id
 
+        const self_id = req.user.id
+
         const results = await sequelize.entities.ProposalEntity.createProposal(
-            TMP_SELF_USER_ID,
+            self_id,
             title,
             description,
             tagId

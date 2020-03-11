@@ -1,4 +1,5 @@
 const EntityUtils = require("./EntityUtils")
+const Op = require("sequelize").Op
 
 const Format = {
     attributes : {
@@ -70,13 +71,25 @@ module.exports = (sequelize, DataTypes) => {
 
     // Fetchers
 
-    ProposalEntity.getAll = async (limit = 5, offset = 0, self_id, user_id = null) => {
-
-        const filter = user_id ? {
+    ProposalEntity.getAll = async (limit = 5, offset = 0, self_id, user_id = null, search = null) => {
+        
+        const searchFilter = search ? {
             where: {
-                author_id: user_id
+                title: {
+                    [Op.substring]: search
+                }
             }
         } : {}
+
+        const authorFilter = user_id ? {
+            where: {
+                author_id: user_id,
+            }
+        } : {}
+
+        const filter = Object.assign(authorFilter, searchFilter)
+
+        console.log({filter})
 
         const proposals = await EntityUtils.getPaginatedList(
             limit, 
@@ -235,45 +248,71 @@ module.exports = (sequelize, DataTypes) => {
 
     ProposalEntity.deleteProposal = async (proposalId, self_id) => {
 
-        const proposal = await ProposalEntity.findByPk(proposalId, {
-            attributes: ["author_id", "id"]
-        })
 
-        if(proposal){
+        if(!Number.isInteger(proposalId) || !Number.isInteger(self_id)){
+            return {
+                error: {
+                    message: "BAD REQUEST - one parameter is invalid",
+                    message_details: {
+                        proposalId: proposalId, 
+                        self_id: self_id
+                    },
+                    status: 400
+                }
+            }
+        }
 
-            // self is author
-            if(proposal.get("author_id") === self_id){
-                const destroyedProposal = await proposal.destroy()
+        try {
+            
+            const proposal = await ProposalEntity.findByPk(proposalId, {
+                attributes: ["author_id", "id"]
+            })
 
-                if(destroyedProposal){
-                    return "destroyed"
-                } else {
-                    // weird 
-                    return {
-                        error: {
-                            message: "BAD REQUEST - cannot delete this proposal",
-                            status: 400
+            if(proposal){
+
+                // self is author
+                if(proposal.get("author_id") === self_id){
+                    const destroyedProposal = await proposal.destroy()
+    
+                    if(destroyedProposal){
+                        return "destroyed"
+                    } else {
+                        // weird 
+                        return {
+                            error: {
+                                message: "BAD REQUEST - cannot delete this proposal",
+                                status: 400
+                            }
                         }
                     }
                 }
-            }
-            // self is not author
+                // self is not author
+                else {
+                    return {
+                        error: {
+                            message: "FORBIDDEN - you are not the author",
+                            status: 403
+                        }
+                    }
+                }
+    
+            } 
+            // this proposal do not exist
             else {
                 return {
                     error: {
-                        message: "FORBIDDEN - you are not the author",
-                        status: 403
+                        message: "NOT FOUND - proposal do not exist",
+                        status: 404
                     }
                 }
             }
-
-        } 
-        // this proposal do not exist
-        else {
+            
+        } catch (DeleteProposalError) {
+            console.log({DeleteProposalError})
             return {
                 error: {
-                    message: "NOT FOUND - proposal do not exist",
-                    status: 404
+                    message: "BAD REQUEST - unhandled error occured",
+                    status: 400
                 }
             }
         }
