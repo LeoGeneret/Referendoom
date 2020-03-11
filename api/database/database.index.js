@@ -7,7 +7,7 @@ const sequelize = new Sequelize(
     {
         host: process.env.DATABASE_HOST,
         dialect: "mysql",
-        logging: false
+        // logging: false
     }
 )
 
@@ -33,15 +33,15 @@ sequelize.entities = {
  */
 
 // Proposal <-> Tag
-ProposalTagEntity.hasMany(ProposalEntity, {as: "proposals", foreignKey: "tag_id"})
+ProposalTagEntity.hasMany(ProposalEntity, {as: "proposals", foreignKey: "tag_id", onDelete: "SET NULL"})
 ProposalEntity.belongsTo(ProposalTagEntity, {as: "tag", foreignKey: "tag_id"})
 
 // Proposal <-> User
-UserEntity.hasMany(ProposalEntity, {as: "proposals", foreignKey: "author_id"})
+UserEntity.hasMany(ProposalEntity, {as: "proposals", foreignKey: "author_id", onDelete: "CASCADE"})
 ProposalEntity.belongsTo(UserEntity, {as: "author", foreignKey: "author_id"})
 
 // User <-> Vote
-UserEntity.hasMany(ProposalVoteEntity, {as: "users_in_favor", foreignKey: "user_id"})
-ProposalEntity.hasMany(ProposalVoteEntity, {as: "votes", foreignKey: "proposal_id"})
+UserEntity.hasMany(ProposalVoteEntity, {as: "users_in_favor", foreignKey: "user_id", onDelete: "CASCADE"})
+ProposalEntity.hasMany(ProposalVoteEntity, {as: "votes", foreignKey: "proposal_id", onDelete: "CASCADE"})
 
 module.exports = sequelize

@@ -60,6 +60,12 @@ const EntityUtils = {
                 }
             }
         }
+    },
+
+
+    validation: {
+        isEmptyOrNull: string => !string || string === "",
+        isBoolean : bool => bool === true || bool === false
     }
 
 }

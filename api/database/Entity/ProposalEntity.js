@@ -64,6 +64,9 @@ module.exports = (sequelize, DataTypes) => {
         updatedAt: false
     })
 
+    // Entities
+
+    const ProposalVoteEntity = sequelize.import("./ProposalVoteEntity")
 
     // Fetchers
 
@@ -106,10 +109,174 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
 
-    ProposalEntity.setVote = async () => {
+    ProposalEntity.setVote = async (proposalId, isAgree, user_id) => {
 
+        proposalId = Number(proposalId)
 
+        if(EntityUtils.validation.isEmptyOrNull(user_id) || !EntityUtils.validation.isBoolean(isAgree) || !Number.isInteger(user_id)){
+            return {
+                error: {
+                    message: "BAD REQUEST - one parameter is invalid",
+                    message_details: {
+                        proposalId: proposalId, 
+                        isAgree : isAgree, 
+                        user_id: user_id
+                    },
+                    status: 400
+                }
+            }
+        }
 
+        try {
+
+            const proposal = await ProposalEntity.findByPk(proposalId, {
+                attributes: ["id"],
+                include: [
+                    {
+                        association: "votes",
+                        attributes: ["id"],
+                        required: false,
+                        where: {
+                            user_id: user_id
+                        }
+                    }
+                ]
+            })
+
+            // proposal do not exists
+            if(!proposal){
+                return {
+                    error: {
+                        message: "NOT FOUND - proposal do not exist",
+                        status: 404
+                    }
+                }
+            } else {
+
+                // user has already vote for this proposal
+                if(proposal.get("votes").length && proposal.get("votes")[0]){
+                    console.log("a")
+                    const modifiedVote = await proposal.get("votes")[0].update({
+                        is_agree: isAgree
+                    })
+                    
+                    return {
+                        is_agree: modifiedVote.get("is_agree")
+                    }
+                } 
+                // user has never vote for this proposal
+                else {
+                    console.log({proposalId, user_id, ProposalVoteEntity})
+
+                    const createdVote = await ProposalVoteEntity.createVote({
+                        user_id: user_id,
+                        proposal_id: proposalId,
+                        is_agree: isAgree,
+                    })
+
+                    return {
+                        is_agree: createdVote.get("is_agree")
+                    }                    
+                }
+            }
+            
+        } catch (SetVoteError) {
+            console.log({SetVoteError})
+            return {
+                error: {
+                    message: "BAD REQUEST - unhandled error occured",
+                    status: 400
+                }
+            }
+        }
+    }
+
+    ProposalEntity.createProposal = async (authorId, title, description, tagId) => {
+
+        // validate input
+
+        if(!Number.isInteger(authorId) || EntityUtils.validation.isEmptyOrNull(title) || EntityUtils.validation.isEmptyOrNull(description)){
+            return {
+                error: {
+                    message: "BAD REQUEST - one parameter is invalid",
+                    message_details: {
+                        authorId: authorId,
+                        title: title,
+                        description: description,
+                    },
+                    status: 400
+                }
+            }
+        }
+
+        try {
+            
+            const createdProposal = await ProposalEntity.create({
+                title: title,
+                description: description,
+                tag_id: tagId,
+                author_id: authorId,
+                created_at: new Date()
+            })
+
+            return "created"
+
+        } catch (CreateProposalError) {
+            console.log({CreateProposalError})
+            return {
+                error: {
+                    message: "BAD REQUEST - unhandled error occured",
+                    status: 400
+                }
+            }
+        }
+
+    }
+
+    ProposalEntity.deleteProposal = async (proposalId, self_id) => {
+
+        const proposal = await ProposalEntity.findByPk(proposalId, {
+            attributes: ["author_id", "id"]
+        })
+
+        if(proposal){
+
+            // self is author
+            if(proposal.get("author_id") === self_id){
+                const destroyedProposal = await proposal.destroy()
+
+                if(destroyedProposal){
+                    return "destroyed"
+                } else {
+                    // weird 
+                    return {
+                        error: {
+                            message: "BAD REQUEST - cannot delete this proposal",
+                            status: 400
+                        }
+                    }
+                }
+            }
+            // self is not author
+            else {
+                return {
+                    error: {
+                        message: "FORBIDDEN - you are not the author",
+                        status: 403
+                    }
+                }
+            }
+
+        } 
+        // this proposal do not exist
+        else {
+            return {
+                error: {
+                    message: "NOT FOUND - proposal do not exist",
+                    status: 404
+                }
+            }
+        }
     }
 
     return ProposalEntity
