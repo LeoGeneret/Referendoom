@@ -58,8 +58,6 @@ export default function MyCard() {
 const styles = StyleSheet.create({
   myCard: {
     height: 185,
-    borderColor: 'green',
-    borderWidth: 1,
     marginLeft: 'auto',
     marginRight: 'auto',
     width:  '90%',

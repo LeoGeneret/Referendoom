@@ -9,6 +9,10 @@ import MyProps from "./components/tabs/MyProps";
 import ListDetails from "./components/tabs/ListDetails";
 import { Ionicons } from "@expo/vector-icons";
 
+let menuTabIcon = require('./assets/menu.png')
+let propsTabIcon  = require('./assets/create.png')
+let createTabIcon = require('./assets/tab3.png')
+
 
 function SettingsScreen() {
   return (
@@ -36,20 +40,18 @@ export default function App() {
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
+            let iconName ;
 
             if (route.name === "Home") {
-              iconName = focused
-                ? "ios-grid"
-                : "ios-grid-outline";
+              iconName = menuTabIcon;
             } else if (route.name === "Mes propositions") {
-              iconName = focused ? "ios-bulb" : "ios-bulb-outline";
+              iconName = propsTabIcon;
             } else if (route.name === "Soumettre") {
-              iconName = focused ? "ios-create" : "ios-create-outline";
+              iconName = createTabIcon;
             }
 
             // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
+            return <Image source={iconName} />;
           }
         })}
         tabBarOptions={{
@@ -60,7 +62,6 @@ export default function App() {
         <Tab.Screen name="Home" component={HomeStackScreen} />
         <Tab.Screen name="Mes propositions" component={MyProps} />
         <Tab.Screen name="Soumettre" component={Create} />
-        <Tab.Screen name="Settings" component={MyProps} />
       </Tab.Navigator>
     </NavigationContainer>
   );

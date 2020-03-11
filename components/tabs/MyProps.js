@@ -51,13 +51,9 @@ const styles = StyleSheet.create({
   },
   flatList: {
     width: '100%',
-    borderColor: 'black',
-    borderWidth: 1,
     flex: 1,
   },
   flatListCCS: {
-    borderColor: 'red',
-    borderWidth: 1,
     justifyContent: 'center',
   },
 });
