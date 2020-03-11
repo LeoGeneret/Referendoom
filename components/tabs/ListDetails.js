@@ -1,14 +1,17 @@
-// import React from 'react';
-// import { StyleSheet, Text, View, Image } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
 
-// export default function listDetails() {
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.title}>List details</Text>
-//     </View>
-//   );
-// }
+export default function listDetails(props) {
 
-// const styles = StyleSheet.create({
+  console.log(props);
 
-// });
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>{props.route.params.id}</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+
+});

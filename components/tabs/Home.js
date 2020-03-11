@@ -1,33 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList, Button, ScrollView } from 'react-native';
 import Header from '../Header';
-// import listDetails from '../tabs/ListDetails';
-import MyCard from '../myCard'
+import ListDetails from '../tabs/ListDetails';
+
 import axios from 'axios';
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [list, setList] = useState([]);
+
+  const displayDetailForItems = (id) => {
+    navigation.navigate("ListDetails", { id: id });
+    console.log("display for item id" + id);
+  };
 
   useEffect(() => {
     const result = axios.get(
       'http://ec2-35-181-9-37.eu-west-3.compute.amazonaws.com:4000/proposals')
       .then(res => {
         setList(res.data.list);
-        console.log(res.data.list);
+        // console.log(res.data.list);
       })
       .catch(res => console.log())
     return () => {
     }
   }, []);
 
-  console.log(list.length);
-
-
   return (
     <View>
       <Header />
       <FlatList
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id + ""}
         data={list}
         renderItem={
           (
@@ -36,20 +38,23 @@ export default function Home() {
             }
           ) => (
               <View style={{ marginTop: 50 }}>
+                <Button
+                  title="Go to Details"
+                  onPress={() => displayDetailForItems(item.id)}
+                />
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                   <View style={styles.card}>
                     <View style={styles.cardHeader}>
-                      <Text style={styles.tag}>{item.label}</Text>
+                      <Text style={styles.tag}>{item.tag ? item.tag.label : ''}</Text>
                     </View>
-                    <Image source={require('../../assets/bg-ecologie.jpg')} style={styles.cardImage}></Image>
-                    <Text style={styles.cardTitle}>{item.title}</Text>
+                    <Image source={item.illustration} style={styles.cardImage}></Image>
                     <View style={styles.cardDetails}>
                       <View style={styles.flex}>
-                        <Text style={styles.voteGood}>70% de oui </Text>
-                        <Text style={styles.votebad}>30% de non</Text>
+                        <Text style={styles.voteGood}>{item.votes.is_agree = item.votes.is_agree * 100} % de oui </Text>
+                        <Text style={styles.votebad}>{item.votes.is_not_agree = item.votes.is_not_agree * 100} % de non</Text>
                       </View>
-                      <Text style={styles.cardTitle}></Text>
-                      <Text> lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum ... </Text>
+                      <Text style={styles.cardTitle}>{item.title}</Text>
+                      <Text numberOfLines={3}> {item.description} </Text>
                       <View style={styles.containerBtn}>
                         <Image style={styles.btnValid} source={require('../../assets/valid.png')}></Image>
                         <Image style={styles.btnCross} source={require('../../assets/cross.png')}></Image>
@@ -61,7 +66,6 @@ export default function Home() {
             )
         }
       />
-      {/* < MyCard /> */}
     </View>
   );
 }
@@ -76,6 +80,7 @@ const styles = StyleSheet.create({
 
   flex: {
     flex: 1,
+    margin: 10,
     flexWrap: 'wrap',
     justifyContent: 'space-around'
   },
@@ -97,8 +102,8 @@ const styles = StyleSheet.create({
 
   card: {
     width: '80%',
-    marginBottom: 10,
-    height: 380,
+    marginBottom: 20,
+    height: 360,
     backgroundColor: 'white',
     shadowColor: "#000",
     shadowOffset: {
@@ -118,8 +123,7 @@ const styles = StyleSheet.create({
   },
 
   cardDetails: {
-    paddingLeft: 20,
-    paddingRight: 20
+    padding: 20
   },
   cardTitle: {
     margin: 10,

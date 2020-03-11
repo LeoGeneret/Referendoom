@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -8,53 +8,61 @@ import {
   Button,
   TouchableOpacity
 } from "react-native";
+import axios from "axios";
 
-export default class myCard extends React.Component {
-  render() {
-    return (
-      <View style={styles.myCard}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardHeader_tag}>Ecologie</Text>
-          <Text style={styles.cardHeader_date}>Jeudi 12 janvier</Text>
-        </View>
-        <View style={styles.cardContent}>
-          <Text style={styles.cardContent_title}>
-            Faut-il arreter le plastique ?
-          </Text>
-          <View style={styles.cardContent_voter}>
-            <View style={styles.cardContent_voteAction}>
-              <Image source={require("../assets/votePos.png")}></Image>
-              <Text style={styles.cardContent_votePositive}>79% de oui</Text>
-            </View>
-            <View style={styles.cardContent_voteAction}>
-              <Image source={require("../assets/voteNeg.png")}></Image>
-              <Text style={styles.cardContent_voteNegative}>79% de non</Text>
-            </View>
+export default function MyCard() {
+
+  useEffect(() => {
+    console.log('myCard')
+
+  }, [])
+  return (
+    <View style={styles.myCard}>
+      <View style={styles.cardHeader}>
+        <Text style={styles.cardHeader_tag}>Ecologie</Text>
+        <Text style={styles.cardHeader_date}>Jeudi 12 janvier</Text>
+      </View>
+      <View style={styles.cardContent}>
+        <Text style={styles.cardContent_title}>
+          Faut-il arreter le plastique ?
+        </Text>
+        <View style={styles.cardContent_voter}>
+          <View style={styles.cardContent_voteAction}>
+            <Image source={require("../assets/votePos.png")}></Image>
+            <Text style={styles.cardContent_votePositive}>79% de oui</Text>
+          </View>
+          <View style={styles.cardContent_voteAction}>
+            <Image source={require("../assets/voteNeg.png")}></Image>
+            <Text style={styles.cardContent_voteNegative}>79% de non</Text>
           </View>
         </View>
-        <View style={styles.cardAction}>
-        <TouchableOpacity
-            style={styles.cardAction_delete}
-            underlayColor="#F2994A"
-          >
-            <Text style={styles.cardAction_deleteText}>Supprimer</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.cardAction_more}
-            underlayColor="#F2994A"
-          >
-            <Text style={styles.cardAction_moreText}>Voir les details</Text>
-          </TouchableOpacity>
-        </View>
       </View>
-    );
-  }
+      <View style={styles.cardAction}>
+        <TouchableOpacity
+          style={styles.cardAction_delete}
+          underlayColor="#F2994A"
+        >
+          <Text style={styles.cardAction_deleteText}>Supprimer</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.cardAction_more}
+          underlayColor="#F2994A"
+        >
+          <Text style={styles.cardAction_moreText}>Voir les details</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   myCard: {
-    width: "90%",
     height: 185,
+    borderColor: 'green',
+    borderWidth: 1,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width:  '90%',
     marginTop: 30,
     backgroundColor: "white",
     shadowColor: "#000",
@@ -131,25 +139,25 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#109CF1",
-    paddingTop:10,
-    paddingBottom:10,
+    paddingTop: 10,
+    paddingBottom: 10
   },
 
   cardAction_moreText: {
-    color:'#fff',
-    textAlign:'center',
-    paddingLeft : 10,
-    paddingRight : 10
+    color: "#fff",
+    textAlign: "center",
+    paddingLeft: 10,
+    paddingRight: 10
   },
   cardAction_delete: {
-    paddingTop:10,
-    paddingBottom:10,
+    paddingTop: 10,
+    paddingBottom: 10
   },
 
   cardAction_deleteText: {
-    color:'#000',
-    textAlign:'center',
-    paddingLeft : 10,
-    paddingRight : 10
-  },
+    color: "#000",
+    textAlign: "center",
+    paddingLeft: 10,
+    paddingRight: 10
+  }
 });
