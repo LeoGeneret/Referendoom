@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './components/tabs/Home';
 import ListDetails from './components/tabs/ListDetails'
+import MyProps from './components/tabs/MyProps';
 
 
 function SettingsScreen() {
@@ -32,7 +33,7 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeStackScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="Settings" component={MyProps} />
       </Tab.Navigator>
     </NavigationContainer>
   );

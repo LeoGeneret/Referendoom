@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, FlatList, Button, ScrollView } from 'react-native';
 import Header from '../Header';
 import ListDetails from '../tabs/ListDetails';
+
 import axios from 'axios';
 
 export default function Home({ navigation }) {
@@ -23,8 +24,6 @@ export default function Home({ navigation }) {
     return () => {
     }
   }, []);
-
-  // console.log(list.length);
 
   return (
     <View>
@@ -103,8 +102,8 @@ const styles = StyleSheet.create({
 
   card: {
     width: '80%',
-    marginBottom: 10,
-    height: 380,
+    marginBottom: 20,
+    height: 360,
     backgroundColor: 'white',
     shadowColor: "#000",
     shadowOffset: {
@@ -124,8 +123,7 @@ const styles = StyleSheet.create({
   },
 
   cardDetails: {
-    paddingLeft: 20,
-    paddingRight: 20
+    padding: 20
   },
   cardTitle: {
     margin: 10,
