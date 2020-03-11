@@ -14,6 +14,9 @@ require("dotenv").config()
     console.clear()
  }
 
+// Utils
+const utils = require("./api.utils")
+
 // Modules
 const logger = require("morgan")
 const express = require("express")
@@ -28,10 +31,15 @@ const PORT = process.env.PORT || 4001
 app.use(logger(MODE === "development" ? "dev" : "tiny"))
 app.use(express.json())
 
+app.use(utils.extractToken)
+
 // Routes
 
 const proposalRouter = require("./routes/api.routes.proposal")(sequelize, express)
-app.use(proposalRouter)
+app.use(utils.needAuthentication, proposalRouter)
+
+const authRouter = require("./routes/api.routes.auth")(sequelize, express)
+app.use(authRouter)
 
 app.get("/", async (req, res) => {
     return res.json("ok")
