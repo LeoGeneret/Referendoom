@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import Header from '../Header';
-// import listDetails from '../tabs/ListDetails';
-import MyCard from '../myCard'
 import axios from 'axios';
 
 export default function Home() {
@@ -20,7 +18,6 @@ export default function Home() {
     }
   }, []);
 
-  console.log(list.length);
 
 
   return (
@@ -35,14 +32,14 @@ export default function Home() {
               item
             }
           ) => (
-              <View style={{ marginTop: 50 }}>
+              <View style={{ marginTop: 100 }}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                   <View style={styles.card}>
                     <View style={styles.cardHeader}>
-                      <Text style={styles.tag}>{item.label}</Text>
+                      <Text style={styles.tag}>Ecologie</Text>
                     </View>
                     <Image source={require('../../assets/bg-ecologie.jpg')} style={styles.cardImage}></Image>
-                    <Text style={styles.cardTitle}>{item.title}</Text>
+
                     <View style={styles.cardDetails}>
                       <View style={styles.flex}>
                         <Text style={styles.voteGood}>70% de oui </Text>
@@ -59,10 +56,9 @@ export default function Home() {
                 </View>
               </View>
             )
-        }
+          }
       />
-      {/* < MyCard /> */}
-    </View>
+    </View >
   );
 }
 
@@ -97,8 +93,8 @@ const styles = StyleSheet.create({
 
   card: {
     width: '80%',
-    marginBottom: 10,
-    height: 380,
+    marginBottom: 20,
+    height: 360,
     backgroundColor: 'white',
     shadowColor: "#000",
     shadowOffset: {
@@ -118,8 +114,7 @@ const styles = StyleSheet.create({
   },
 
   cardDetails: {
-    paddingLeft: 20,
-    paddingRight: 20
+    padding: 20
   },
   cardTitle: {
     margin: 10,
