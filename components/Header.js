@@ -13,6 +13,10 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   header: {
+    zIndex: 3,
+    width: '100%',
+    height: 100,
+    backgroundColor: 'white'
   },
 
   notif: {
