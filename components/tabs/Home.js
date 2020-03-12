@@ -51,9 +51,15 @@ export default function Home({ navigation }) {
                       </View>
                       <Image source={{ uri: item.illustration }} style={styles.cardImage}></Image>
                       <View style={styles.cardDetails}>
-                        <View style={styles.flex}>
-                          <Text style={styles.voteGood}>{item.votes.is_agree = item.votes.is_agree * 100} % de oui </Text>
-                          <Text style={styles.votebad}>{item.votes.is_not_agree = item.votes.is_not_agree * 100} % de non</Text>
+                        <View  style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                          <View style={{ flexDirection: 'row' }}>
+                            <Image source={require("../../assets/votePos.png")}></Image>
+                            <Text style={styles.voteGood}>{item.votes.is_agree = item.votes.is_agree * 100} % de oui </Text>
+                          </View>
+                          <View style={{ flexDirection: 'row' }}>
+                            <Image source={require("../../assets/voteNeg.png")}></Image>
+                            <Text style={styles.votebad}>{item.votes.is_not_agree = item.votes.is_not_agree * 100} % de non</Text>
+                          </View>
                         </View>
                         <Text style={styles.cardTitle}>{item.title}</Text>
                         <Text numberOfLines={3}> {item.description} </Text>
@@ -76,6 +82,7 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'row',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
