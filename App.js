@@ -69,7 +69,7 @@ export default function App() {
         }}
       >
         <Tab.Screen name="Home" component={HomeStackScreen} />
-        <Tab.Screen name="Soumettre" component={Create} />
+        <Tab.Screen name="Création" component={Create} />
         <Tab.Screen name="Mes propositions" component={MyPropsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
