@@ -40,8 +40,7 @@ export default function MyCard() {
       <View style={styles.cardAction}>
         <TouchableOpacity
           style={styles.cardAction_delete}
-          underlayColor="#F2994A"
-        >
+          underlayColor="#F2994A">
           <Text style={styles.cardAction_deleteText}>Supprimer</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
     height: 185,
     marginLeft: 'auto',
     marginRight: 'auto',
-    width:  '90%',
+    width: '90%',
     marginTop: 30,
     backgroundColor: "white",
     shadowColor: "#000",
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 15
+    marginBottom: 15,
   },
 
   cardHeader_tag: {
