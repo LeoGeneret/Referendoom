@@ -58,12 +58,12 @@ export default function MyCard() {
 const styles = StyleSheet.create({
   myCard: {
     height: 185,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    width:  '90%',
     marginTop: 30,
     backgroundColor: "white",
     shadowColor: "#000",
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width:  '90%',
     shadowOffset: {
       width: 0,
       height: 2
