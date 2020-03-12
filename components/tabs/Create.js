@@ -58,11 +58,17 @@ export default function Create(props) {
     })
       .then(res => {
         setTags(res.data)
-        console.log(res.data);
+        console.log('tags', res.data);
       })
       .catch(error => console.log(error))
 
   }, []);
+
+  const selectTag = (id) => {
+    console.log('coucou')
+    setFormTag(id);
+    
+  }
 
   return (
     <View>
@@ -79,7 +85,7 @@ export default function Create(props) {
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
               {
                 tags.map(tagsItem => (
-                  <TouchableOpacity onPress={tagsItem => setFormTag(tagsItem.id)} style={styles.btnOption}>
+                  <TouchableOpacity onPress={() => selectTag(tagsItem.id)} style={Object.assign({}, styles.btnOption, tagsItem.id === formTag && {borderWidth: 1, borderColor: params.getTagColors(formTag)})}>
                     {tagsItem && <Text style={Object.assign({}, styles.tag, { color: params.getTagColors(tagsItem.id) })}>{tagsItem.label}</Text>}
                     {/* <Text style={{ textAlign: 'center', }}>{tagsItem.label}</Text> */}
                   </TouchableOpacity>
