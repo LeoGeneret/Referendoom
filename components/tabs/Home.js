@@ -26,7 +26,7 @@ export default function Home({ navigation }) {
   }, []);
 
   return (
-    <View>
+    <View> 
       <Image style={styles.bg} source={require('../../assets/bg.jpg')}></Image>
       <View style={{ zIndex: 3 }}>
         <Header />

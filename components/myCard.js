@@ -10,12 +10,7 @@ import {
 } from "react-native";
 import axios from "axios";
 
-export default function MyCard({proposal}) {
-  
-  useEffect(() => {
-    console.log('myCard')
-
-  }, [])
+export default function MyCard({proposal, seeDetailsProps}) {
   return (
     <View style={styles.myCard}>
       <View style={styles.cardHeader}>
@@ -46,6 +41,7 @@ export default function MyCard({proposal}) {
         <TouchableOpacity
           style={styles.cardAction_more}
           underlayColor="#F2994A"
+          onPress={seeDetailsProps}
         >
           <Text style={styles.cardAction_moreText}>Voir les details</Text>
         </TouchableOpacity>

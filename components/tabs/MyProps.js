@@ -3,11 +3,20 @@ import { StyleSheet, Text, View, Image, FlatList } from "react-native";
 import { SearchBar } from "react-native-elements";
 import Header from "../Header";
 import MyCard from "../myCard";
+import ListDetails from '../tabs/ListDetails';
+import MyPropsDetails from './MyPropsDetails';
 import axios from "axios";
+
 import { BorderlessButton, ScrollView } from "react-native-gesture-handler";
 
-export default function Home() {
+export default function MyProps({ navigation }) {
   const [list, setList] = useState([]);
+
+  const displayDetailForMyProps = (id) => {
+    console.log('hello');
+    navigation.navigate("MyPropsDetails", { id: id });
+    console.log("display for item id" + id);
+  };
 
   useEffect(() => {
     const result = axios
@@ -44,7 +53,7 @@ export default function Home() {
               contentContainerStyle={styles.flatListCCS}
               data={list}
               renderItem={({ item }) => {
-                return <MyCard proposal={item} key={item.id}/>;
+                return <MyCard seeDetailsProps={() => displayDetailForMyProps(item.id)} proposal={item} key={item.id}/>;
               }}
             />
           </View>
