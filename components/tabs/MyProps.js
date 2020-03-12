@@ -8,21 +8,33 @@ import MyPropsDetails from './MyPropsDetails';
 import axios from "axios";
 
 import { BorderlessButton, ScrollView } from "react-native-gesture-handler";
+import utils from "../../app.utils";
+
+const bgImg = require("../../assets/bg2.png")
 
 export default function MyProps({ navigation }) {
+
   const [list, setList] = useState([]);
+  const [searchInput, setSearchInput] = useState("")
 
   const displayDetailForMyProps = (id) => {
-    console.log('hello');
     navigation.navigate("MyPropsDetails", { id: id });
     console.log("display for item id" + id);
   };
 
+  const deleteProposal = (proposalId) => {
+
+    utils.fetch("/proposals/" + proposalId, {
+      method: "DELETE"
+    })
+    .then(res => {
+      setList(list.filter(f => f.id !== proposalId))
+    })
+    .catch(error => console.log({error}))
+  }
+
   useEffect(() => {
-    const result = axios
-      .get(
-        "http://ec2-35-181-9-37.eu-west-3.compute.amazonaws.com:4000/proposals?user_id=1"
-      )
+    utils.fetch("/proposals?user_id=1")
       .then(res => {
         setList(res.data.list);
       })
@@ -32,18 +44,19 @@ export default function MyProps({ navigation }) {
 
   return (
     <View style={styles.myProps}>
-      <Header />
+      <Header/>
       <View style={styles.pageContent}>
         <Image
           style={styles.bg}
-          source={require("../../assets/bg2.png")}
-        ></Image>
+          source={bgImg}
+        />
         <SearchBar
           containerStyle={styles.searchBar}
           inputContainerStyle={styles.inputSearchBar}
           placeholder="Rechercher..."
+          onChangeText={setSearchInput}
           lightTheme={true}
-          value={""}
+          value={searchInput}
         />
         <ScrollView style={styles.flatListScrollView}>
           <View style={styles.flatListContainer}>
@@ -53,7 +66,7 @@ export default function MyProps({ navigation }) {
               contentContainerStyle={styles.flatListCCS}
               data={list}
               renderItem={({ item }) => {
-                return <MyCard seeDetailsProps={() => displayDetailForMyProps(item.id)} proposal={item} key={item.id}/>;
+                return <MyCard handleDelete={() => deleteProposal(item.id)} seeDetailsProps={() => displayDetailForMyProps(item.id)} proposal={item} key={item.id}/>;
               }}
             />
           </View>
