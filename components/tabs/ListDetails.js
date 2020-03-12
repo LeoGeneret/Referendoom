@@ -33,7 +33,7 @@ export default function listDetails(props) {
         <TouchableOpacity
           underlayColor="#F2994A"
           style={styles.btn_back}
-          onPress={() => props.navigation.navigate("Home")}
+          onPress={() => props.navigation.goBack()}
         >
           <Text style={styles.name_btn}>
             <Image source={require("../../assets/left.png")}></Image>

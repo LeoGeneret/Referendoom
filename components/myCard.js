@@ -8,14 +8,21 @@ import {
   Button,
   TouchableOpacity
 } from "react-native";
+import moment from 'moment';
+import 'moment/locale/fr';
 import axios from "axios";
 
 export default function MyCard({proposal, seeDetailsProps}) {
+
+  const transformPourcentage = function(posVotes) {
+    return Math.floor(posVotes*100)+'%'
+  }
+
   return (
     <View style={styles.myCard}>
       <View style={styles.cardHeader}>
         {proposal.item ? <Text style={styles.cardHeader_tag}>{proposal.item}</Text> : <Text style={styles.cardHeader_tag}>le tag est null</Text>}
-        <Text style={styles.cardHeader_date}>{proposal.created_at}</Text>
+        <Text style={styles.cardHeader_date}>{moment(proposal.created_at, "YYYYMMDD").fromNow()}</Text>
       </View>
       <View style={styles.cardContent}>
         <Text style={styles.cardContent_title}>
@@ -24,11 +31,11 @@ export default function MyCard({proposal, seeDetailsProps}) {
         <View style={styles.cardContent_voter}>
           <View style={styles.cardContent_voteAction}>
             <Image source={require("../assets/votePos.png")}></Image>
-            <Text style={styles.cardContent_votePositive}>{proposal.votes.is_agree}</Text>
+            <Text style={styles.cardContent_votePositive}>{transformPourcentage(proposal.votes.is_agree)}</Text>
           </View>
           <View style={styles.cardContent_voteAction}>
             <Image source={require("../assets/voteNeg.png")}></Image>
-            <Text style={styles.cardContent_voteNegative}>{proposal.votes.is_not_agree}</Text>
+            <Text style={styles.cardContent_voteNegative}>{transformPourcentage(proposal.votes.is_not_agree)}</Text>
           </View>
         </View>
       </View>
