@@ -1,12 +1,11 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View, Image } from "react-native";
 
 export default function Header() {
   return (
     <View style={styles.header}>
       <Text style={styles.title}>Referendoom</Text>
       {/* <Image style={styles.profile} source={require('../../assets/valid.png')}></Image> */}
-      <Image style={styles.notif} source={require('../assets/notif.png')}></Image>
     </View>
   );
 }
@@ -14,22 +13,31 @@ export default function Header() {
 const styles = StyleSheet.create({
   header: {
     zIndex: 3,
-    width: '100%',
+    width: "100%",
     height: 100,
-    backgroundColor: 'white'
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5
   },
 
   notif: {
-    position: 'absolute',
+    position: "absolute",
     right: 20,
     top: 50
   },
   title: {
     width: 160,
-    position: 'absolute',
+    position: "absolute",
     marginTop: 50,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: "bold"
   }
 });

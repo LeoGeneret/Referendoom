@@ -43,8 +43,12 @@ export default function listDetails(props) {
 
   if (!data) return <View></View>
 
+  const transformPourcentage = function(posVotes) {
+    return Math.floor(posVotes*100)+'%'
+  }
+
   return (
-    <View>
+    <View style={{backgroundColor: 'white', flex: 1}}>
       <Header />
       <View style={styles.container}>
         <Image source={data.illustration ? { uri: data.illustration } : ""} style={styles.cardImage}></Image>
@@ -53,14 +57,15 @@ export default function listDetails(props) {
           style={styles.btn_back}
           onPress={() => props.navigation.goBack()}
         >
-          <Text style={styles.name_btn}>
-            <Image source={leftIcon}></Image>
-          </Text>
+          <View style={styles.name_btn}>
+            <Image style={{color: 'blue', marginRight: 4}} source={leftIcon}></Image>
+            <Text style={{fontWeight: 'bold', color: 'grey'}}>Retour</Text>
+          </View>
         </TouchableOpacity>
         <View style={styles.cardheader}>
           <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
-            <Text>{data.votes.count} ont participés</Text>
-            <Text>60 000 ont vues</Text>
+            <Text>{data.votes.count} participants</Text>
+            <Text>60 000 vues</Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: "space-around", marginTop: 10 }}>
             <View style={{ flexDirection: 'row' }}>
@@ -74,16 +79,16 @@ export default function listDetails(props) {
           </View>
         </View>
         <View style={styles.container_desc}>
-          <View style={{ flexDirection: 'row', justifyContent: "space-between", marginTop: 10 }}>
-            <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', justifyContent: "space-between", marginTop: 10, alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center'}}>
               <Image source={{ uri: data.author.avatar }} style={styles.imgProfile}></Image>
-              <Text>{data.author.first_name}</Text>
-              <Text>{data.author.last_name}</Text>
+              <Text style={{marginRight: 3, fontWeight: 'bold' }}>{data.author.first_name}</Text>
+              <Text style={{fontWeight: 'bold' }}>{data.author.last_name}</Text>
             </View>
             <Text>{moment(data.created_at, "YYYYMMDD").fromNow()}</Text>
           </View>
           <Text style={styles.h1}>{data.title}</Text>
-          <Text>{data.description}</Text>
+          <Text style={{textAlign: 'justify', fontSize: 15}}>{data.description}</Text>
           <View style={styles.cardAction}>
             <TouchableOpacity
               style={styles.cardAction_agree}
@@ -105,7 +110,6 @@ export default function listDetails(props) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
   },
   cardImage: {
     position: 'absolute',
@@ -118,9 +122,9 @@ const styles = StyleSheet.create({
     zIndex: 10,
     position: 'absolute',
     width: '80%',
-    height: 80,
-    borderRadius: 10,
-    padding: 10,
+    borderRadius: 10, 
+    alignSelf: 'center',
+    padding: 20,
     backgroundColor: 'white',
     shadowColor: "#000",
     shadowOffset: {
@@ -141,18 +145,23 @@ const styles = StyleSheet.create({
   },
   btn_back: {
     paddingLeft: 3,
+    marginTop: 10,
+    marginLeft: 10,
     zIndex: 100,
     top: 0,
-    width: 30,
     height: 30,
+    width: 80,
     backgroundColor: 'white',
-    borderRadius: 5
+    borderRadius: 5,
+    flexDirection: 'row',
   },
   h1: {
     padding: 10,
     textAlign: 'center',
-    fontSize: 19,
-    fontWeight: 'bold'
+    fontSize: 23,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    marginTop: 30
   },
   cardAction: {
     alignItems: 'center',
@@ -179,11 +188,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#27AE60",
+    marginLeft: 10,
   },
+  name_btn: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },  
   text_notagree: {
     fontSize: 16,
     fontWeight: "bold",
     color: "red",
+    marginLeft: 10,
   },
   btnText_agree: {
     fontSize: 12,
@@ -197,6 +212,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     backgroundColor: 'red',
-    borderRadius: 100
+    borderRadius: 100,
+    marginRight: 10
   }
 });
