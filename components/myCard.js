@@ -8,45 +8,50 @@ import {
   Button,
   TouchableOpacity
 } from "react-native";
-import axios from "axios";
+import moment from 'moment';
+import 'moment/locale/fr';
 
-export default function MyCard() {
 
-  useEffect(() => {
-    console.log('myCard')
+const votePosIcon = require("../assets/votePos.png")
+const voteNegIcon = require("../assets/voteNeg.png")
 
-  }, [])
+export default function MyCard({proposal, seeDetailsProps}) {
+
+  const transformPourcentage = function(posVotes) {
+    return Math.floor(posVotes*100)+'%'
+  }
+
   return (
     <View style={styles.myCard}>
       <View style={styles.cardHeader}>
-        <Text style={styles.cardHeader_tag}>Ecologie</Text>
-        <Text style={styles.cardHeader_date}>Jeudi 12 janvier</Text>
+        {proposal.tag && <Text style={styles.cardHeader_tag}>{proposal.tag.label}</Text>}
+        <Text style={styles.cardHeader_date}>{moment(proposal.created_at).format("DD MMMM YYYY")}</Text>
       </View>
       <View style={styles.cardContent}>
         <Text style={styles.cardContent_title}>
-          Faut-il arreter le plastique ?
+          {proposal.title}
         </Text>
         <View style={styles.cardContent_voter}>
           <View style={styles.cardContent_voteAction}>
-            <Image source={require("../assets/votePos.png")}></Image>
-            <Text style={styles.cardContent_votePositive}>79% de oui</Text>
+            <Image source={votePosIcon}></Image>
+            <Text style={styles.cardContent_votePositive}>{transformPourcentage(proposal.votes.is_agree)}</Text>
           </View>
           <View style={styles.cardContent_voteAction}>
-            <Image source={require("../assets/voteNeg.png")}></Image>
-            <Text style={styles.cardContent_voteNegative}>79% de non</Text>
+            <Image source={voteNegIcon}></Image>
+            <Text style={styles.cardContent_voteNegative}>{transformPourcentage(proposal.votes.is_not_agree)}</Text>
           </View>
         </View>
       </View>
       <View style={styles.cardAction}>
         <TouchableOpacity
           style={styles.cardAction_delete}
-          underlayColor="#F2994A"
-        >
+          underlayColor="#F2994A">
           <Text style={styles.cardAction_deleteText}>Supprimer</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.cardAction_more}
           underlayColor="#F2994A"
+          onPress={seeDetailsProps}
         >
           <Text style={styles.cardAction_moreText}>Voir les details</Text>
         </TouchableOpacity>
@@ -57,13 +62,12 @@ export default function MyCard() {
 
 const styles = StyleSheet.create({
   myCard: {
-    height: 185,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    width:  '90%',
     marginTop: 30,
     backgroundColor: "white",
     shadowColor: "#000",
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width:  '90%',
     shadowOffset: {
       width: 0,
       height: 2
@@ -79,7 +83,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 15
+    marginBottom: 15,
   },
 
   cardHeader_tag: {
@@ -91,7 +95,8 @@ const styles = StyleSheet.create({
   cardHeader_date: {
     fontSize: 13,
     opacity: 0.5,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    marginLeft: "auto"
   },
 
   cardContent_title: {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, FlatList, Button, ScrollView, Picker } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
+import Header from '../Header'
 
 import moment from 'moment'
 
@@ -57,6 +58,7 @@ export default function Home({ navigation }) {
 
     // fetch proposals list
 
+    console.log("will fetch porposal list")
     utils.fetch('/proposals', {
       method: "GET"
     }).then(res => {
@@ -92,6 +94,7 @@ export default function Home({ navigation }) {
 
   return (
     <View>
+      <Header/>
       <RNPickerSelect
         placeholder={placeholderTagFilter}
         onValueChange={value => {
@@ -120,7 +123,7 @@ export default function Home({ navigation }) {
                       <Text>{item.author.first_name + " " + item.author.last_name}</Text>
                       {item.tag && <Text style={Object.assign({}, styles.tag, {color: params.getTagColors(item.tag.id)})}>{item.tag.label}</Text>}
                     </View>
-                    <Image source={{ uri: item.illustration }} style={styles.cardImage}></Image>
+                    <Image source={item.illustration ? { uri: item.illustration } : null } style={styles.cardImage}></Image>
                     <View style={styles.cardDetails}>
                       <Text style={styles.cardCreatedAt}>{"Il y a " + formCreatedAt(item.created_at)}</Text>
                       <Text style={styles.cardTitle}>{item.title}</Text>
@@ -161,9 +164,14 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
+    flexDirection: 'row',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  bg: {
+    position: 'absolute',
+    width: '100%'
   },
 
   cardHeader: {
