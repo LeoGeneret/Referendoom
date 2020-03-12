@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import axios from 'axios';
 
 export default function listDetails(props) {
@@ -23,10 +23,20 @@ export default function listDetails(props) {
     <View style={styles.container}>
       <Text style={styles.title}>{props.route.params.id}</Text>
       <Text>{data.title}</Text>
+      <Text>{data.description}</Text>
+      <Image source={{ uri: data.illustration }} style={styles.cardImage}></Image>
+      {/* <Text style={styles.voteGood}>{data.votes.is_agree} % de oui </Text>
+      <Text style={styles.votebad}>{data.votes.is_not_agree} % de non</Text> */}
+      <Button>Je suis d'accord</Button>
+      <Button>Je ne suis pas d'accord</Button>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-
+  cardImage: {
+    width: '100%',
+    height: 150,
+    backgroundColor: 'black'
+  },
 });

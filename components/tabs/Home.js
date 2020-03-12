@@ -27,45 +27,48 @@ export default function Home({ navigation }) {
 
   return (
     <View>
-      <Header />
-      <FlatList
-        keyExtractor={item => item.id + ""}
-        data={list}
-        renderItem={
-          (
-            {
-              item
-            }
-          ) => (
-              <View style={{ marginTop: 50 }}>
-                <Button
-                  title="Go to Details"
-                  onPress={() => displayDetailForItems(item.id)}
-                />
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                  <View style={styles.card}>
-                    <View style={styles.cardHeader}>
-                      <Text style={styles.tag}>{item.tag ? item.tag.label : ''}</Text>
-                    </View>
-                    <Image source={{ uri: item.illustration }} style={styles.cardImage}></Image>
-                    <View style={styles.cardDetails}>
-                      <View style={styles.flex}>
-                        <Text style={styles.voteGood}>{item.votes.is_agree = item.votes.is_agree * 100} % de oui </Text>
-                        <Text style={styles.votebad}>{item.votes.is_not_agree = item.votes.is_not_agree * 100} % de non</Text>
+      <Image style={styles.bg} source={require('../../assets/bg.jpg')}></Image>
+      <View style={{ zIndex: 3 }}>
+        <Header />
+        <FlatList
+          keyExtractor={item => item.id + ""}
+          data={list}
+          renderItem={
+            (
+              {
+                item
+              }
+            ) => (
+                <View style={{ marginTop: 50 }}>
+                  <Button
+                    title="Go to Details"
+                    onPress={() => displayDetailForItems(item.id)}
+                  />
+                  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={styles.card}>
+                      <View style={styles.cardHeader}>
+                        <Text style={styles.tag}>{item.tag ? item.tag.label : ''}</Text>
                       </View>
-                      <Text style={styles.cardTitle}>{item.title}</Text>
-                      <Text numberOfLines={3}> {item.description} </Text>
-                      <View style={styles.containerBtn}>
-                        <Image style={styles.btnValid} source={require('../../assets/valid.png')}></Image>
-                        <Image style={styles.btnCross} source={require('../../assets/cross.png')}></Image>
+                      <Image source={{ uri: item.illustration }} style={styles.cardImage}></Image>
+                      <View style={styles.cardDetails}>
+                        <View style={styles.flex}>
+                          <Text style={styles.voteGood}>{item.votes.is_agree = item.votes.is_agree * 100} % de oui </Text>
+                          <Text style={styles.votebad}>{item.votes.is_not_agree = item.votes.is_not_agree * 100} % de non</Text>
+                        </View>
+                        <Text style={styles.cardTitle}>{item.title}</Text>
+                        <Text numberOfLines={3}> {item.description} </Text>
+                        <View style={styles.containerBtn}>
+                          <Image style={styles.btnValid} source={require('../../assets/valid.png')}></Image>
+                          <Image style={styles.btnCross} source={require('../../assets/cross.png')}></Image>
+                        </View>
                       </View>
                     </View>
                   </View>
                 </View>
-              </View>
-            )
-        }
-      />
+              )
+          }
+        />
+      </View>
     </View>
   );
 }
@@ -76,6 +79,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  bg: {
+    position: 'absolute',
+    width: '100%'
   },
 
   flex: {
@@ -104,6 +111,7 @@ const styles = StyleSheet.create({
     width: '80%',
     marginBottom: 20,
     height: 360,
+    borderRadius: 10,
     backgroundColor: 'white',
     shadowColor: "#000",
     shadowOffset: {
