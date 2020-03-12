@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, ScrollView, TextInput, Picker, Button, Alert, I
 import utils from '../../app.utils'
 import params from '../../app.params'
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Header from "../Header";
 
 export default function Create(props) {
   console.log("render create")
@@ -57,31 +58,35 @@ export default function Create(props) {
     })
       .then(res => {
         setTags(res.data)
+        console.log(res.data);
       })
       .catch(error => console.log(error))
 
   }, []);
 
   return (
-    <ScrollView>
-      <Image
-        style={styles.bg}
-        source={require("../../assets/bg-2.jpg")}
-      ></Image>
-      <View style={styles.page}>
-        <Text style={styles.pageTitle}>Créer une proposition</Text>
-        <View style={styles.formGroup}>
-          <Text style={styles.formLabel}>Quel est le thème de votre proposition</Text>
-          <View>
-            {
-              tags.map(tagsItem => (
-                <TouchableOpacity>
-                  <Text>{tagsItem.label}</Text>
-                </TouchableOpacity>
-              ))
-            }
-          </View>
-          {/* <Picker
+    <View>
+      <Header />
+      <ScrollView>
+        <Image
+          style={styles.bg}
+          source={require("../../assets/bg-2.jpg")}
+        ></Image>
+        <View style={styles.page}>
+          <Text style={styles.pageTitle}>Créer une proposition</Text>
+          <View style={styles.formGroup}>
+            <Text style={styles.formLabel}>Quel est le thème de votre proposition</Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+              {
+                tags.map(tagsItem => (
+                  <TouchableOpacity onPress={tagsItem => setFormTag(tagsItem.id)} style={styles.btnOption}>
+                    {tagsItem && <Text style={Object.assign({}, styles.tag, { color: params.getTagColors(tagsItem.id) })}>{tagsItem.label}</Text>}
+                    {/* <Text style={{ textAlign: 'center', }}>{tagsItem.label}</Text> */}
+                  </TouchableOpacity>
+                ))
+              }
+            </View>
+            {/* <Picker
             selectedValue={formTag}
             style={styles.formTagSelect}
             onValueChange={value => setFormTag(value)}
@@ -92,36 +97,37 @@ export default function Create(props) {
               ))
             }
           </Picker> */}
-        </View>
-        <View style={styles.formGroup}>
-          <Text style={styles.formLabel}>Renseignez le titre de votre pétition</Text>
-          <TextInput
-            onChangeText={text => setFormTitle(text)}
-            value={formTitle}
-            style={styles.formTitleInput}
-          />
-        </View>
-        <View style={styles.formGroup}>
-          <Text style={styles.formLabel}>Décrivez votre pétition</Text>
-          <TextInput
-            onChangeText={text => setFormDescription(text)}
-            value={formDescription}
-            style={styles.formDescInput}
-            multiline={true}
-            numberOfLines={10}
-          />
-        </View>
+          </View>
+          <View style={styles.formGroup}>
+            <Text style={styles.formLabel}>Renseignez le titre de votre pétition</Text>
+            <TextInput
+              onChangeText={text => setFormTitle(text)}
+              value={formTitle}
+              style={styles.formTitleInput}
+            />
+          </View>
+          <View style={styles.formGroup}>
+            <Text style={styles.formLabel}>Décrivez votre pétition</Text>
+            <TextInput
+              onChangeText={text => setFormDescription(text)}
+              value={formDescription}
+              style={styles.formDescInput}
+              multiline={true}
+              numberOfLines={10}
+            />
+          </View>
 
-        <View style={styles.formGroup}>
-          <Button
-            title="Publier ma proposition"
-            onPress={submitForm}
-            style={styles.formSubmitBtn}
-          />
+          <View style={styles.formGroup}>
+            <Button
+              title="Publier ma proposition"
+              onPress={submitForm}
+              style={styles.formSubmitBtn}
+            />
+          </View>
+          <View style={styles.fixSpaceBug}></View>
         </View>
-        <View style={styles.fixSpaceBug}></View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -212,6 +218,28 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     // borderColor: "red",
     // borderWidth: 2
+  },
+  btnOption: {
+    marginBottom: 20,
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderRadius: 5,
+    backgroundColor: 'white',
+    width: 100,
+    shadowColor: "white",
+    shadowOffset: {
+      width: 10,
+      height: 10,
+    },
+    shadowOpacity: 0.01,
+    shadowRadius: 1.84,
+
+    elevation: 5
+  },
+  tag: {
+    textAlign: 'center'
   }
 
 })
