@@ -15,17 +15,32 @@ const voteNegIcon = require("../../assets/voteNeg.png")
 
 export default function listDetails(props) {
 
-  const [data, setData] = useState(null);
 
+  const [data, setData] = useState(null);
+  
   useEffect(() => {
 
     utils.fetch("/proposals/" + props.route.params.id)
-      .then(res => {
-        setData(res.data);
-      })
-      .catch(error => console.log(error))
+    .then(res => {
+
+      if(res.status === 200){
+        setData(res.data)
+      }
+    })
+    .catch(error => console.log(error))
 
   }, []);
+
+  useEffect(() => {
+
+    console.log(
+      data && data.illustration ? data.illustration : "noimage"
+    )
+
+  }, [data])
+
+  const makeItPercentage = value => Math.floor(value * 100)
+
 
   if (!data) return <View></View>
 
@@ -37,7 +52,7 @@ export default function listDetails(props) {
     <View style={{backgroundColor: 'white', flex: 1}}>
       <Header />
       <View style={styles.container}>
-        <Image source={data.illustration ? { uri: data.illustration } : '' } style={styles.cardImage}></Image>
+        <Image source={data.illustration ? { uri: data.illustration } : ""} style={styles.cardImage}></Image>
         <TouchableOpacity
           underlayColor="#F2994A"
           style={styles.btn_back}
@@ -55,12 +70,12 @@ export default function listDetails(props) {
           </View>
           <View style={{ flexDirection: 'row', justifyContent: "space-around", marginTop: 10 }}>
             <View style={{ flexDirection: 'row' }}>
-              <Image source={require("../../assets/votePos.png")}></Image>
-              <Text style={styles.text_agree}>{transformPourcentage(data.votes.is_agree)}</Text>
+              <Image source={votePosIcon}></Image>
+              <Text style={styles.text_agree}>{makeItPercentage(data.votes.is_agree)} % de oui</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
-              <Image source={require("../../assets/voteNeg.png")}></Image>
-              <Text style={styles.text_notagree}>{transformPourcentage(data.votes.is_not_agree)}</Text>
+              <Image source={voteNegIcon}></Image>
+              <Text style={styles.text_notagree}>{makeItPercentage(data.votes.is_not_agree)} % de non</Text>
             </View>
           </View>
         </View>
@@ -102,7 +117,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: 200,
-    backgroundColor: 'black'
+    backgroundColor: 'grey'
   },
   cardheader: {
     top: 100,

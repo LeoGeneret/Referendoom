@@ -8,6 +8,7 @@ import {
   Button,
   TouchableOpacity
 } from "react-native";
+import utils from '../app.utils'
 import moment from 'moment';
 import 'moment/locale/fr';
 
@@ -15,7 +16,7 @@ import 'moment/locale/fr';
 const votePosIcon = require("../assets/votePos.png")
 const voteNegIcon = require("../assets/voteNeg.png")
 
-export default function MyCard({proposal, seeDetailsProps}) {
+export default function MyCard({handleDelete, proposal, seeDetailsProps}) {
 
   const transformPourcentage = function(posVotes) {
     return Math.floor(posVotes*100)+'%'
@@ -45,7 +46,9 @@ export default function MyCard({proposal, seeDetailsProps}) {
       <View style={styles.cardAction}>
         <TouchableOpacity
           style={styles.cardAction_delete}
-          underlayColor="#F2994A">
+          underlayColor="#F2994A"
+          onPress={handleDelete}  
+        >
           <Text style={styles.cardAction_deleteText}>Supprimer</Text>
         </TouchableOpacity>
         <TouchableOpacity
