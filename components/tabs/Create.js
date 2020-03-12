@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, TextInput, Picker, Button, Alert } from "react-native";
+import { StyleSheet, Text, View, ScrollView, TextInput, Picker, Button, Alert, Image } from "react-native";
 
 import utils from '../../app.utils'
 import params from '../../app.params'
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Create(props) {
   console.log("render create")
 
   // States
-  const [tags, setTags] = useState([]) 
-  const [formTag, setFormTag] = useState(null) 
+  const [tags, setTags] = useState([])
+  const [formTag, setFormTag] = useState(null)
   const [formTitle, setFormTitle] = useState("")
   const [formDescription, setFormDescription] = useState("")
-    
+
   // Methods
 
   const submitForm = (event) => {
-      console.log({
-        formTag,
-        formDescription,
-        formTitle
-      })
+    console.log({
+      formTag,
+      formDescription,
+      formTitle
+    })
 
-    if (formTag && formTitle && formDescription){
+    if (formTag && formTitle && formDescription) {
       utils.fetch("/proposals", {
         method: "POST",
         data: {
@@ -31,15 +32,15 @@ export default function Create(props) {
           tag_id: formTag
         }
       }).then(res => {
-        console.log({res})
+        console.log({ res })
         // proposal has been created
-        if(res.status === 201){
+        if (res.status === 201) {
           props.navigation.navigate("Home")
         }
       })
-      .catch(error => {
-        console.log({error})
-      })
+        .catch(error => {
+          console.log({ error })
+        })
     } else {
       console.log("bad")
       Alert.alert(undefined, "You should fill all input")
@@ -50,35 +51,47 @@ export default function Create(props) {
   // Cycle
 
   useEffect(() => {
-    
+
     utils.fetch("/tags", {
       method: "GET"
     })
-    .then(res => {
-      setTags(res.data)
-    })
-    .catch(error => console.log(error))
+      .then(res => {
+        setTags(res.data)
+      })
+      .catch(error => console.log(error))
 
   }, []);
-  
+
   return (
-    <ScrollView
-      style={styles.page}
-    >
+    <ScrollView>
+      <Image
+        style={styles.bg}
+        source={require("../../assets/bg-2.jpg")}
+      ></Image>
+      <View style={styles.page}>
         <Text style={styles.pageTitle}>Créer une proposition</Text>
         <View style={styles.formGroup}>
           <Text style={styles.formLabel}>Quel est le thème de votre proposition</Text>
-          <Picker
+          <View>
+            {
+              tags.map(tagsItem => (
+                <TouchableOpacity>
+                  <Text>{tagsItem.label}</Text>
+                </TouchableOpacity>
+              ))
+            }
+          </View>
+          {/* <Picker
             selectedValue={formTag}
             style={styles.formTagSelect}
             onValueChange={value => setFormTag(value)}
           >
             {
               tags.map(tagsItem => (
-                <Picker.Item key={tagsItem.id} label={tagsItem.label} value={tagsItem.id}/>
-              )) 
+                <Picker.Item key={tagsItem.id} label={tagsItem.label} value={tagsItem.id} />
+              ))
             }
-          </Picker>
+          </Picker> */}
         </View>
         <View style={styles.formGroup}>
           <Text style={styles.formLabel}>Renseignez le titre de votre pétition</Text>
@@ -107,6 +120,7 @@ export default function Create(props) {
           />
         </View>
         <View style={styles.fixSpaceBug}></View>
+      </View>
     </ScrollView>
   );
 }
@@ -114,8 +128,13 @@ export default function Create(props) {
 const styles = StyleSheet.create({
 
   page: {
-    padding: 20,
     paddingTop: 50,
+    padding: 20
+  },
+
+  bg: {
+    position: 'absolute',
+    width: '100%'
   },
 
   pageTitle: {
@@ -151,8 +170,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
 
-  formTagSelect: {
- 
+  formTagSelect: {
+
   },
 
   formLabel: {
@@ -183,13 +202,13 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     justifyContent: "flex-end"
   },
-  
-  formSubmitBtn:{
+
+  formSubmitBtn: {
     backgroundColor: "#109CF1",
     marginBottom: 100
   },
 
-  fixSpaceBug:{
+  fixSpaceBug: {
     marginBottom: 50,
     // borderColor: "red",
     // borderWidth: 2

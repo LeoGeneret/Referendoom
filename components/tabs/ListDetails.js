@@ -8,22 +8,22 @@ import moment from 'moment'
 moment.locale('fr')
 
 
-const leftIcon = require("../../assets/left.png") 
+const leftIcon = require("../../assets/left.png")
 const votePosIcon = require("../../assets/votePos.png")
 const voteNegIcon = require("../../assets/voteNeg.png")
 
 
 export default function listDetails(props) {
-  
+
   const [data, setData] = useState(null);
 
   useEffect(() => {
 
     utils.fetch("/proposals/" + props.route.params.id)
-    .then(res => {
-      setData(res.data);
-    })
-    .catch(error => console.log(error))
+      .then(res => {
+        setData(res.data);
+      })
+      .catch(error => console.log(error))
 
   }, []);
 
@@ -62,7 +62,7 @@ export default function listDetails(props) {
         <View style={styles.container_desc}>
           <View style={{ flexDirection: 'row', justifyContent: "space-between", marginTop: 10 }}>
             <View style={{ flexDirection: 'row' }}>
-              <Image source={{ uri: data.illustration }} style={styles.imgProfile}></Image>
+              <Image source={{ uri: data.author.avatar }} style={styles.imgProfile}></Image>
               <Text>{data.author.first_name}</Text>
               <Text>{data.author.last_name}</Text>
             </View>

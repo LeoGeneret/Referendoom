@@ -27,7 +27,7 @@ export default function Home({ navigation }) {
 
   // Methods
   const navigateToProposalDetails = id => {
-    navigation.navigate("ListDetails", {id: id});
+    navigation.navigate("ListDetails", { id: id });
   }
 
   const formCreatedAt = createdAt => {
@@ -39,11 +39,11 @@ export default function Home({ navigation }) {
     diffType = " jours"
 
     // moins d'1 jours
-    if(diff === 0){
+    if (diff === 0) {
       diff = today.diff(momentCreatedAt, "hour")
       diffType = " heures"
 
-      if(diff === 0){
+      if (diff === 0) {
         diff = today.diff(momentCreatedAt, "minute")
         diffType = " minutes"
       }
@@ -64,18 +64,18 @@ export default function Home({ navigation }) {
     }).then(res => {
       setList(res.data.list);
     })
-    .catch(error => console.log(error))
+      .catch(error => console.log(error))
 
     // fetch tags
 
     utils.fetch("/tags", {
       method: "GET"
     })
-    .then(res => {
-      setTags(res.data)
-    })
-    .catch(error => console.log(error))
-    
+      .then(res => {
+        setTags(res.data)
+      })
+      .catch(error => console.log(error))
+
   }, []);
 
   useEffect(() => {
@@ -87,48 +87,52 @@ export default function Home({ navigation }) {
     }).then(res => {
       setList(res.data.list);
     })
-    .catch(error => console.log(error))
+      .catch(error => console.log(error))
 
 
   }, [tagFilter])
 
   return (
     <View>
-      <Header/>
+      <Header />
       <RNPickerSelect
         placeholder={placeholderTagFilter}
         onValueChange={value => {
           console.log("HAS CHANGEDE")
           setTagFilter(value)
         }}
-        items={tags.map(m => ({label: m.label, value: m.id}))}
-        style={{borderColor: "red", borderWidth: 1}}
+        items={tags.map(m => ({ label: m.label, value: m.id }))}
+        style={{ borderColor: "red", borderWidth: 1, zIndex: 100 }}
       />
+      <Image
+        style={styles.bg}
+        source={require("../../assets/bg.jpg")}
+      ></Image>
       <FlatList
         keyExtractor={item => item.id + ""}
         style={styles.flatList}
         data={list}
         renderItem={
-          ({item}) => (
-              <View 
-                style={styles.cardContainer}
+          ({ item }) => (
+            <View
+              style={styles.cardContainer}
+            >
+              <TouchableOpacity
+                style={styles.card}
+                onPress={() => navigateToProposalDetails(item.id)}
               >
-                <TouchableOpacity 
-                  style={styles.card}
-                  onPress={() => navigateToProposalDetails(item.id)}  
-                >
-                  <View style={styles.cardInner}>
-                    <View style={styles.cardHeader}>
-                      <Image style={styles.cardHeaderAvatar} source={{uri: item.author.avatar}}/>
-                      <Text>{item.author.first_name + " " + item.author.last_name}</Text>
-                      {item.tag && <Text style={Object.assign({}, styles.tag, {color: params.getTagColors(item.tag.id)})}>{item.tag.label}</Text>}
-                    </View>
-                    <Image source={item.illustration ? { uri: item.illustration } : null } style={styles.cardImage}></Image>
-                    <View style={styles.cardDetails}>
-                      <Text style={styles.cardCreatedAt}>{"Il y a " + formCreatedAt(item.created_at)}</Text>
-                      <Text style={styles.cardTitle}>{item.title}</Text>
-                      <Text style={styles.cardDesc} numberOfLines={2}> {item.description} </Text>
-                      {/* <View style={styles.containerBtn}>
+                <View style={styles.cardInner}>
+                  <View style={styles.cardHeader}>
+                    <Image style={styles.cardHeaderAvatar} source={{ uri: item.author.avatar }} />
+                    <Text>{item.author.first_name + " " + item.author.last_name}</Text>
+                    {item.tag && <Text style={Object.assign({}, styles.tag, { color: params.getTagColors(item.tag.id) })}>{item.tag.label}</Text>}
+                  </View>
+                  <Image source={item.illustration ? { uri: item.illustration } : null} style={styles.cardImage}></Image>
+                  <View style={styles.cardDetails}>
+                    <Text style={styles.cardCreatedAt}>{"Il y a " + formCreatedAt(item.created_at)}</Text>
+                    <Text style={styles.cardTitle}>{item.title}</Text>
+                    <Text style={styles.cardDesc} numberOfLines={2}> {item.description} </Text>
+                    {/* <View style={styles.containerBtn}>
                         <TouchableOpacity onPress={() => console.log("good")}>
                           <Image style={styles.btnValid} source={valid}/>
                         </TouchableOpacity>
@@ -136,11 +140,11 @@ export default function Home({ navigation }) {
                           <Image style={styles.btnCross} source={cross}/>
                         </TouchableOpacity>
                       </View> */}
-                    </View>
                   </View>
-                </TouchableOpacity>
-              </View>
-            )
+                </View>
+              </TouchableOpacity>
+            </View>
+          )
         }
       />
     </View>
@@ -169,9 +173,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
   bg: {
     position: 'absolute',
-    width: '100%'
+    width: '100%',
+    zIndex: -1
   },
 
   cardHeader: {
@@ -218,7 +224,7 @@ const styles = StyleSheet.create({
 
   cardImage: {
     width: '100%',
-    paddingBottom: 100 * (9/16) + "%",
+    paddingBottom: 100 * (9 / 16) + "%",
     backgroundColor: 'black',
     marginBottom: 42,
     backgroundColor: "grey"
@@ -235,7 +241,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "relative"
   },
-  
+
   cardTitle: {
     marginVertical: 10,
     textAlign: 'center',
@@ -259,7 +265,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center"
   },
-  
+
   voteGood: {
     fontSize: 10,
     color: 'green',
