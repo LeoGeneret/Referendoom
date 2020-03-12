@@ -27,7 +27,10 @@ const HomeStack = createStackNavigator();
 
 function HomeStackScreen() {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}>
       <HomeStack.Screen name="Home" component={Home} />
       <HomeStack.Screen name="ListDetails" component={ListDetails} />
     </HomeStack.Navigator>
