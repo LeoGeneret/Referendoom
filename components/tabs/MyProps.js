@@ -44,7 +44,7 @@ export default function Home() {
               contentContainerStyle={styles.flatListCCS}
               data={list}
               renderItem={({ item }) => {
-                return <MyCard />;
+                return <MyCard proposal={item} key={item.id}/>;
               }}
             />
           </View>
@@ -80,14 +80,14 @@ const styles = StyleSheet.create({
     marginTop: 40,
     backgroundColor: "#F6F5F5",
     borderRadius: 5,
-    alignSelf:'center',
+    alignSelf: "center"
   },
   inputSearchBar: {
     backgroundColor: "#F6F5F5"
   },
   flatListScrollView: {
     zIndex: 2,
-    paddingTop: 160,
+    paddingTop: 160
   },
   flatListContainer: {
     flex: 1,

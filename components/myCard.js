@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import axios from "axios";
 
-export default function MyCard() {
-
+export default function MyCard({proposal}) {
+  
   useEffect(() => {
     console.log('myCard')
 
@@ -19,21 +19,21 @@ export default function MyCard() {
   return (
     <View style={styles.myCard}>
       <View style={styles.cardHeader}>
-        <Text style={styles.cardHeader_tag}>Ecologie</Text>
-        <Text style={styles.cardHeader_date}>Jeudi 12 janvier</Text>
+        {proposal.item ? <Text style={styles.cardHeader_tag}>{proposal.item}</Text> : <Text style={styles.cardHeader_tag}>le tag est null</Text>}
+        <Text style={styles.cardHeader_date}>{proposal.created_at}</Text>
       </View>
       <View style={styles.cardContent}>
         <Text style={styles.cardContent_title}>
-          Faut-il arreter le plastique ?
+          {proposal.title}
         </Text>
         <View style={styles.cardContent_voter}>
           <View style={styles.cardContent_voteAction}>
             <Image source={require("../assets/votePos.png")}></Image>
-            <Text style={styles.cardContent_votePositive}>79% de oui</Text>
+            <Text style={styles.cardContent_votePositive}>{proposal.votes.is_agree}</Text>
           </View>
           <View style={styles.cardContent_voteAction}>
             <Image source={require("../assets/voteNeg.png")}></Image>
-            <Text style={styles.cardContent_voteNegative}>79% de non</Text>
+            <Text style={styles.cardContent_voteNegative}>{proposal.votes.is_not_agree}</Text>
           </View>
         </View>
       </View>
@@ -57,7 +57,6 @@ export default function MyCard() {
 
 const styles = StyleSheet.create({
   myCard: {
-    height: 185,
     marginTop: 30,
     backgroundColor: "white",
     shadowColor: "#000",
