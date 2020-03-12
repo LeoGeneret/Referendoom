@@ -22,6 +22,7 @@ export default function listDetails(props) {
     utils.fetch("/proposals/" + props.route.params.id)
     .then(res => {
       setData(res.data);
+      console.log(res.data);
     })
     .catch(error => console.log(error))
 
@@ -37,19 +38,20 @@ export default function listDetails(props) {
     <View style={{backgroundColor: 'white', flex: 1}}>
       <Header />
       <View style={styles.container}>
-        <Image source={{ uri: data.illustration }} style={styles.cardImage}></Image>
+        <Image source={data.illustration ? { uri: data.illustration } : '' } style={styles.cardImage}></Image>
         <TouchableOpacity
           underlayColor="#F2994A"
           style={styles.btn_back}
           onPress={() => props.navigation.goBack()}
         >
-          <Text style={styles.name_btn}>
-            <Image source={leftIcon}></Image>
-          </Text>
+          <View style={styles.name_btn}>
+            <Image style={{color: 'blue', marginRight: 4}} source={leftIcon}></Image>
+            <Text style={{fontWeight: 'bold', color: 'grey'}}>Retour</Text>
+          </View>
         </TouchableOpacity>
         <View style={styles.cardheader}>
           <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
-            <Text>{data.votes.count} ont participés</Text>
+            <Text>{data.votes.count} participants</Text>
             <Text>60 000 vues</Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: "space-around", marginTop: 10 }}>
@@ -66,7 +68,7 @@ export default function listDetails(props) {
         <View style={styles.container_desc}>
           <View style={{ flexDirection: 'row', justifyContent: "space-between", marginTop: 10, alignItems: 'center' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-              <Image source={{ uri: data.illustration }} style={styles.imgProfile}></Image>
+              <Image source={{ uri: data.author.avatar }} style={styles.imgProfile}></Image>
               <Text style={{marginRight: 3, fontWeight: 'bold' }}>{data.author.first_name}</Text>
               <Text style={{fontWeight: 'bold' }}>{data.author.last_name}</Text>
             </View>
@@ -107,8 +109,8 @@ const styles = StyleSheet.create({
     zIndex: 10,
     position: 'absolute',
     width: '80%',
-    borderRadius: 10,
-alignSelf: 'center',
+    borderRadius: 10, 
+    alignSelf: 'center',
     padding: 20,
     backgroundColor: 'white',
     shadowColor: "#000",
@@ -130,12 +132,15 @@ alignSelf: 'center',
   },
   btn_back: {
     paddingLeft: 3,
+    marginTop: 10,
+    marginLeft: 10,
     zIndex: 100,
     top: 0,
-    width: 30,
     height: 30,
+    width: 80,
     backgroundColor: 'white',
-    borderRadius: 5
+    borderRadius: 5,
+    flexDirection: 'row',
   },
   h1: {
     padding: 10,
@@ -172,6 +177,10 @@ alignSelf: 'center',
     color: "#27AE60",
     marginLeft: 10,
   },
+  name_btn: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },  
   text_notagree: {
     fontSize: 16,
     fontWeight: "bold",
