@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -34,34 +34,45 @@ function HomeStackScreen() {
   );
 }
 
+const styles = StyleSheet.create({
+
+  safeAreaView: {
+    flex: 1
+  }
+
+})
+
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName ;
+    <SafeAreaView style={styles.safeAreaView}>
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName="Home"
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName ;
 
-            if (route.name === "Home") {
-              iconName = menuTabIcon;
-            } else if (route.name === "Mes propositions") {
-              iconName = propsTabIcon;
-            } else if (route.name === "Soumettre") {
-              iconName = createTabIcon;
+              if (route.name === "Home") {
+                iconName = menuTabIcon;
+              } else if (route.name === "Mes propositions") {
+                iconName = propsTabIcon;
+              } else if (route.name === "Création") {
+                iconName = createTabIcon;
+              }
+              
+              return <Image source={iconName} />;
             }
-            
-            return <Image source={iconName} />;
-          }
-        })}
-        tabBarOptions={{
-          activeTintColor: "tomato",
-          inactiveTintColor: "gray"
-        }}
-      >
-        <Tab.Screen name="Home" component={HomeStackScreen} />
-        <Tab.Screen name="Mes propositions" component={MyProps} />
-        <Tab.Screen name="Soumettre" component={Create} />
-      </Tab.Navigator>
-    </NavigationContainer>
+          })}
+          tabBarOptions={{
+            activeTintColor: "tomato",
+            inactiveTintColor: "gray"
+          }}
+        >
+          <Tab.Screen name="Home" component={HomeStackScreen} />
+          <Tab.Screen name="Création" component={Create} />
+          <Tab.Screen name="Mes propositions" component={MyProps} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </SafeAreaView>
   );
 }

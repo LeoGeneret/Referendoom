@@ -12,5 +12,14 @@ module.exports = (sequelize, DataTypes) => {
         updatedAt: false
     })
 
+
+    // Fetchers
+
+    ProposalTagEntity.getAll = async () => {
+        return ProposalTagEntity.findAll({
+            
+        })
+    }
+
     return ProposalTagEntity
 }

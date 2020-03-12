@@ -17,10 +17,11 @@ module.exports = (sequelize, express) => {
         const offset = req.query.offset && Number(req.query.offset)
         const limit = req.query.limit && Number(req.query.limit)
         const search = req.query.search || null
+        const tag_id = req.query.tag_id && Number(req.query.tag_id)
 
         const self_id = req.user.id
 
-        const results = await sequelize.entities.ProposalEntity.getAll(limit, offset, self_id, userId, search)
+        const results = await sequelize.entities.ProposalEntity.getAll(limit, offset, self_id, userId, tag_id, search)
 
         if(results.error){
             return res.status(results.error.status).json(results)

@@ -1,8 +1,12 @@
 const EntityUtils = require("./EntityUtils")
 const Op = require("sequelize").Op
+const moment = require("moment")
 
 const Format = {
     attributes : {
+        order: [
+            ["created_at", "DESC"],
+        ],
         attributes: {
             exclude: ["tag_id", "author_id"]
         },
@@ -12,7 +16,7 @@ const Format = {
             },
             {
                 association: "author",
-                attributes: ["id", "first_name", "last_name"]
+                attributes: ["id", "first_name", "last_name", "avatar"]
             },
             {
                 association: "votes"
@@ -20,7 +24,7 @@ const Format = {
         ]
     },
 
-    output: (proposalsItems, self_id) => {
+    output: (proposalsItems, self_id, today) => {
 
         const votes = proposalsItems.get("votes")
         const votes_count = votes.length
@@ -29,8 +33,11 @@ const Format = {
         const is_agree_percent = is_agree_count / votes_count
         const is_not_agree_percent = 1 - is_agree_percent
 
+        // let createdAgo = Math.abs(moment(proposalsItems.get("created_at")).diff(today, "day"))
+
         return {
             ...proposalsItems.get(),
+            // created_at: createdAgo,
             user_is_in_favor: !!votes.find(v => v.user_id === self_id),
             votes: {
                 count: votes_count,
@@ -71,8 +78,14 @@ module.exports = (sequelize, DataTypes) => {
 
     // Fetchers
 
-    ProposalEntity.getAll = async (limit = 5, offset = 0, self_id, user_id = null, search = null) => {
+    ProposalEntity.getAll = async (limit = 5, offset = 0, self_id, user_id = null, tagId = null, search = null) => {
         
+        const tagFilter = tagId ? {
+            where: {
+                tag_id: tagId
+            }
+        } : {}
+
         const searchFilter = search ? {
             where: {
                 title: {
@@ -87,7 +100,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         } : {}
 
-        const filter = Object.assign(authorFilter, searchFilter)
+        const filter = Object.assign(authorFilter, searchFilter, tagFilter)
 
         console.log({filter})
 
@@ -103,7 +116,8 @@ module.exports = (sequelize, DataTypes) => {
         )
 
         if(!proposals.error){
-            proposals.list = proposals.list.map(p => Format.output(p, self_id))
+            let today = moment()
+            proposals.list = proposals.list.map(p => Format.output(p, self_id, today))
         }  
 
         return proposals
@@ -116,7 +130,7 @@ module.exports = (sequelize, DataTypes) => {
         })
 
         if(!proposal.error){
-            return Format.output(proposal, self_id)
+            return Format.output(proposal, self_id, moment())
         } else {
             return proposal
         }

@@ -21,7 +21,7 @@ const Utils = {
                 // but weird it should fail before (in verifyToken())
                 return res.status(401).json({
                     error: {
-                        message: "UNAUTHORIZED - token is null"
+                        message: "UNAUTHORIZED - token is invalid or has expired"
                     }
                 })
             }
@@ -81,11 +81,7 @@ const Utils = {
 
         } catch (VerifyTokenError) {
             console.log({VerifyTokenError})
-            return res.status(401).json({
-                error: {
-                    message: "UNAUTHORIZED - token invalid or expired"
-                }
-            })
+            return null
         }
 
     }

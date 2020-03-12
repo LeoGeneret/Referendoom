@@ -15,7 +15,7 @@ const Utils = {
 
 const USER_COUNT = 57
 const PROPOSALS_PER_USERS_MAX = 14 
-const TAGS = ["ecologie", "economie", "transport", "loisirs"]
+const TAGS = ["Ecologie", "Politique", "Economie", "Social", "Santé"]
 
 async function seed(){
 
@@ -79,7 +79,7 @@ async function seed(){
                         // 50% chance to return random tags ELSE no tag
                         tag_id: Math.random() > .5 ? faker.random.arrayElement(tags).get("id") : null,
                         author_id: usersItem.get("id"),
-                        illustration: Math.random() > .3 ? "https://picsum.photos/id/" + proposalCount + "/400/400" : null
+                        illustration: Math.random() > .4 ? "https://picsum.photos/id/" + proposalCount + "/400/400" : null
                     }
                 }))
             } else {

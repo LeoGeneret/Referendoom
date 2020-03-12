@@ -41,6 +41,9 @@ app.use(utils.needAuthentication, proposalRouter)
 const authRouter = require("./routes/api.routes.auth")(sequelize, express)
 app.use(authRouter)
 
+const tagRouter = require("./routes/api.routes.tag")(sequelize, express)
+app.use(utils.needAuthentication, tagRouter)
+
 app.get("/", async (req, res) => {
     return res.json("ok")
 })
